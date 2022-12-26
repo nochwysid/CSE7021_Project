@@ -12,6 +12,7 @@ public class GetVotes : MonoBehaviour
     private bool novotes;
     public GameObject item; // the idea is that this is the item being voted on
     public GameObject[] players;
+    private HashSet<GameObject> entities;
     private int votes;
     private Hashtable winners;
     private Hashtable slots2;  // this is for storing the ID and vote guess of players
@@ -23,24 +24,20 @@ public class GetVotes : MonoBehaviour
     {
         canGrab = false;
         novotes = true;
-        //item = this.gameObject;
-        //item = this.gameObject.GetComponent<GameObject>();
-        //item = this.GetHashCode();
-        //item = this.GetInstanceID();
-        item = this.GetComponent<GameObject>();
+        item = this.gameObject;
         votes = 0;
         winners = new Hashtable();
         slots2 = new Hashtable();
         t1 = 0.0F;
 
-        Material material = item.GetComponent<Material>();
+        Material material = item.GetComponent<MeshRenderer>().material;
         int crc = material.ComputeCRC();
-        Debug.Log("material crc: " + crc.ToString() + ", item name: " + item.name);
-        image = (byte[])Encoding.UTF8.GetBytes(item.GetComponent<Material>().ToString());
+        //Debug.Log("material crc: " + crc.ToString() + ", item name: " + item.name);
+        image = (byte[])Encoding.UTF8.GetBytes(material.ToString());
         //image = (byte[])Encoding.UTF8.GetBytes(item.GetHashCode().ToString());
     }
     public void vote(int hashcode, int guess)
-    {
+    {   //entities.Add(other.tostring)
         this.votes++;
         if (novotes)
         {
@@ -63,21 +60,23 @@ public class GetVotes : MonoBehaviour
         if (votes > 0 && (t1 - Time.time) > 6.0F)
         {
             int hc = 0;
+            if (this.votes != entities.Count) { Debug.LogError("Double dipping not allowed"); this.votes = entities.Count; }
 
             slots2.AsQueryable();
-
+            HashSet<GameObject>.Enumerator ents = entities.GetEnumerator();
+            while (ents.MoveNext()) { }
             slots2.AsParallel();
 
             //List<int> keylist = slots2.Keys;
 
             ICollection keylist = slots2.Keys;
 
-            foreach (var item in keylist)
+            foreach (var player in keylist)
             {
                 // 'value' is returned as object, so requires casting
-                if (Mathf.Abs((int)slots2[item] - votes) < 3)// threshold for how close to be to the actual number of votes
+                if (Mathf.Abs((int)slots2[player] - this.votes) < 3)// threshold for how close to be to the actual number of votes
                 {
-                    winners.Add(item, (int)slots2[item]);
+                    winners.Add(player, (int)slots2[player]);
                     //int hc = winners[0][0];
                     //GameObject p = winners[0].Get<GameObject>();
                 }

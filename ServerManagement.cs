@@ -9,29 +9,18 @@ public class ServerManagement : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        //1. connect to server
-        //2. connect to lobby
-        //3. connect to room 
-
         /* make sure assets > photon > photonunitynetwork > resources > photonserversettings.asset: 'start in offline mode' is UNchecked */
         //PhotonNetwork.ConnectUsingSettings(); // connect to server, 
+        //PhotonNetwork.LeaveLobby();
         /*
-        PhotonNetwork.JoinRoom("room name"); // connect to room 
-        PhotonNetwork.CreateRoom("room name", room_settings); // create room
-        PhotonNetwork.JoinOrCreateRoom("room name", room_settings, TypedLobby.Default);
-        PhotonNetwork.LeaveRoom();
-        PhotonNetwork.LeaveLobby();
          */
     }
-
-
 
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to the server");
         PhotonNetwork.JoinLobby(); // connect to lobby
         //It checks/controls the connection of the server
-
     }
 
     public override void OnJoinedLobby()
@@ -73,6 +62,4 @@ public class ServerManagement : MonoBehaviourPunCallbacks
     {
         Debug.Log("Could not create room");
     }
-
-
 }

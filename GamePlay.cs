@@ -55,7 +55,7 @@ public class GamePlay : MonoBehaviour
     {
         for (int i = 0; i < mydata.Length-1; i++)
         {
-            if (mydata[i] == "") { Debug.LogError("NFT requires name, crypto wallet address, and timestamp");return null ; }
+            if (mydata[i] == "") { Debug.LogError("NFT requires name, crypto wallet address, and timestamp"); return null;}
         }
         
         if(image == null)
