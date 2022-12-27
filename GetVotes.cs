@@ -57,8 +57,9 @@ public class GetVotes : MonoBehaviour
     void Update()
     {
         //check time and votes
-        if (votes > 0 && (t1 - Time.time) > 6.0F)
+        if (votes > 0 && (t1 - Time.time) > 2.0F)
         {
+            Debug.Log("-----line 62------");
             int hc = 0;
             if (this.votes != entities.Count) { Debug.LogError("Double dipping not allowed"); this.votes = entities.Count; }
 
@@ -70,12 +71,13 @@ public class GetVotes : MonoBehaviour
             //List<int> keylist = slots2.Keys;
 
             ICollection keylist = slots2.Keys;
-
+            Debug.Log("------line 74-------");
             foreach (var player in keylist)
             {
                 // 'value' is returned as object, so requires casting
                 if (Mathf.Abs((int)slots2[player] - this.votes) < 3)// threshold for how close to be to the actual number of votes
                 {
+                    Debug.Log("------line80------");
                     winners.Add(player, (int)slots2[player]);
                     //int hc = winners[0][0];
                     //GameObject p = winners[0].Get<GameObject>();
